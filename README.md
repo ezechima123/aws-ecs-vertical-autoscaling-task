@@ -30,12 +30,12 @@ mvn clean verify package
 
 Secondly, I set the AWS Access Keys on my Windows Environment PATH as shown below as the Terramform builds is dependent on it:
 ```bash
-`WINDOWS` 
+WINDOWS 
 set AWS_ACCESS_KEY_ID=your_access_key_id
 set AWS_SECRET_ACCESS_KEY=your_secret_access_key
 set AWS_REGION=your_aws_region
 
-`UNIX/LINUX` 
+UNIX/LINUX
 export AWS_ACCESS_KEY_ID=your_access_key_id
 export AWS_SECRET_ACCESS_KEY=your_secret_access_key
 export AWS_REGION=your_aws_region
@@ -53,5 +53,15 @@ If all goes well, the resources will be created on your AWS
 ## Simulation and Testing
 
 ## Further Enhancements
+The following are other enhancements that can be done on the system to improve the production ability of the process:
+
+1. Creating a DeploymentScript or a Ci/Cd pipeline to automating the whole process
+2. Improving the CPU-Memory selection algorithm to avoid Invalid CPU or memory value specified error
+
+## Resources
+I consulted few online websites to be able to work on this and few are shown below:
+
+* [AWS SDK V2](https://docs.aws.amazon.com/sdk-for-java/)
+* [Ant Media Server](https://github.com/ant-media/Ant-Media-Server/wiki/Scaling-on-AWS-ECS-Fargate)
 
 
