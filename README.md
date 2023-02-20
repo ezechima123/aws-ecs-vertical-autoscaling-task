@@ -7,7 +7,7 @@ AWS ECS deployment does not support vertical autoscaling.  Vertical autoscaling 
 This solution enables vertical (cpu and memory) autoscaling on an ECS Cluster  by using a Lambda function written in Java and connected to the SNS Topic as a Subscriber.
 Furthermore,I created  an alarm to monitor CPU and Memory Utilization metrics based on 80% threashold and which action is also connected to the same SNS Topic as a Producer.
 
-<img src="resources/solution.jpg"
+<img src="resources/solution2.jpg"
      alt="Solution Architecture"
      style="float: left; margin-right: 10px;" />
 
