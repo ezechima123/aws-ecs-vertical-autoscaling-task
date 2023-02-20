@@ -37,17 +37,9 @@ public class AlarmMessageHandler implements RequestHandler<SNSEvent, String> {
     private String serviceName;
     private String taskDefintionArn;
     private String taskDefintionFamily;
-    private HashMap<String, String> cpuMemoryMapping = new HashMap<String, String>();
     // List of available CPU and memory values in ECS Fargate
     private static final List<String> CPU_VALUES = Arrays.asList("256", "512", "1024", "2048");
     private static final List<String> MEMORY_VALUES = Arrays.asList("512", "1024", "2048", "3072", "4096", "5120", "6144", "7168", "8192");
-
-    public AlarmMessageHandler() {
-        cpuMemoryMapping.put("256", "512,1024,2048");
-        cpuMemoryMapping.put("256", "512,1024,2048");
-        cpuMemoryMapping.put("256", "512,1024,2048");
-        cpuMemoryMapping.put("256", "512,1024,2048");
-    }
 
     @Override
     public String handleRequest(SNSEvent event, Context context) {

@@ -41,10 +41,10 @@
     </dependencies>
   </dependencyManagement>
   <properties>
-    <maven.compiler.target>1.8</maven.compiler.target>
     <aws.java.sdk.version>2.19.1</aws.java.sdk.version>
     <exec.mainClass>com.getpliant.ecs.vertical.autoscale.handler.EcsVerticalAutoscaleLambda</exec.mainClass>
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 </project>
