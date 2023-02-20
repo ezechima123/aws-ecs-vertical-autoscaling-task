@@ -18,18 +18,39 @@ Once the alarm is triggered, it send the message to the Lambda through the SNS T
 
 For the Source to build, it requires the following Software requirments as well as AWS ACCESS AND SECRET KEYS. Also ensure the Environmental variables are set and their HOME defined on their PATHs.
 
-* AWS CLI already configured
 * [Java SE Development Kit 8 installed](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * [Maven](https://maven.apache.org/install.html)
 * [TerraForm installed](https://developer.hashicorp.com/terraform/downloads?product_intent=terraform)
 
 
-We use `maven` to install our dependencies and package our application into a JAR file:
+Firstly,I have to use `maven` to install our dependencies and package our application into a JAR (ecs-vertical-autoscale-lambda-1.0.0-SNAPSHOT) file:
 ```bash
 mvn clean verify package
 ```
 
-## Simulation
+Secondly, I set the AWS Access Keys on my Windows Environment PATH as shown below as the Terramform builds is dependent on it:
+```bash
+`WINDOWS` 
+set AWS_ACCESS_KEY_ID=your_access_key_id
+set AWS_SECRET_ACCESS_KEY=your_secret_access_key
+set AWS_REGION=your_aws_region
+
+`UNIX/LINUX` 
+export AWS_ACCESS_KEY_ID=your_access_key_id
+export AWS_SECRET_ACCESS_KEY=your_secret_access_key
+export AWS_REGION=your_aws_region
+```
+
+Thirdly, I ran the Terraform builds to create the Resources(Cluster,Task,Services) as shown below:
+```bash
+terraform init
+terraform plan
+terraform validate
+terraform apply --auto-approve
+```
+If all goes well, the resources will be created on your AWS
+
+## Simulation and Testing
 
 ## Further Enhancements
 
