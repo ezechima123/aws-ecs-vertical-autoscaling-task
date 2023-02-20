@@ -3,9 +3,8 @@ package com.getpliant.ecs.vertical.autoscale.handler;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.amazonaws.services.lambda.runtime.events.SNSEvent;
+import com.getpliant.ecs.vertical.autoscale.helper.CommonHelper;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import software.amazon.awssdk.awscore.exception.AwsServiceException;
 import software.amazon.awssdk.core.exception.SdkClientException;
@@ -30,7 +29,7 @@ import software.amazon.awssdk.services.ecs.model.UpdateServiceResponse;
  * @version 1.0
  * @since 19.02.2023
  */
-public class AlarmMessageHandler implements RequestHandler<SNSEvent, String> {
+public class AlarmMessageHandler implements RequestHandler<Object, String> {
 
     private EcsClient ecsClient;
     private String clusterArn;
@@ -42,20 +41,37 @@ public class AlarmMessageHandler implements RequestHandler<SNSEvent, String> {
     private static final List<String> MEMORY_VALUES = Arrays.asList("512", "1024", "2048", "3072", "4096", "5120", "6144", "7168", "8192");
 
     @Override
-    public String handleRequest(SNSEvent event, Context context) {
+    public String handleRequest(Object event, Context context) {
 
         LambdaLogger logger = context.getLogger();
         try {
-            String eventMessage = event.getRecords().get(0).getSNS().getMessage();
-            ecsClient = EcsClient.builder().region(Region.AWS_GLOBAL).build();
+            //logger.log("Incoming Message => " + event.getRecords().get(0).getSNS().getMessage() + "\n");
+            logger.log("Incoming Message => " + event.toString() + "\n");
+            //String eventMessage = event.getRecords().get(0).getSNS().getMessage();
+            //AWS_GLOBAL
+            
+            logger.log("Current Region => " + System.getenv("AWS_REGION") + "\n");
+            
+            //String region = System.getenv("AWS_REGION");
+            //ecsClient = EcsClient.builder().region(Region.US_EAST_1).build();
+            ecsClient = EcsClient.builder().region(Region.of(System.getenv("AWS_REGION"))).build();
 
+            
             ListClustersResponse listClustersResponse = ecsClient.listClusters();
             clusterArn = listClustersResponse.clusterArns().get(0);
             logger.log("The ClusterArn is " + clusterArn + "\n");
+            if (!CommonHelper.isNotNull(clusterArn)) {
+                return CommonHelper.generateResponse("96", "CLUSTER_ARN_NOTFOUND");
+            }
 
+            
             ListServicesResponse listServicesRespone = ecsClient.listServices(ListServicesRequest.builder().cluster(clusterArn).build());
             String serviceArn = listServicesRespone.serviceArns().get(0);
             logger.log("The ServiceArn is " + serviceArn + "\n");
+             if (!CommonHelper.isNotNull(serviceArn)) {
+                return CommonHelper.generateResponse("96", "SERVICE_ARN_NOTFOUND");
+            }
+
 
             serviceName = serviceArn.substring(serviceArn.indexOf("/") + 1);
             logger.log("The Service Name " + serviceName + "\n");
@@ -70,6 +86,9 @@ public class AlarmMessageHandler implements RequestHandler<SNSEvent, String> {
             // Get the task definition ARN
             taskDefintionArn = listTaskDefinitionsResponse.taskDefinitionArns().get(0);
             logger.log("The Task ARN is " + taskDefintionArn + "\n");
+            if (!CommonHelper.isNotNull(taskDefintionArn)) {
+                return CommonHelper.generateResponse("96", "TASK_DEFINITION_ARN_NOTFOUND");
+            }
 
             logger.log("About to get Taskdefinition: " + "\n");
             // Describe the task definition
@@ -91,7 +110,7 @@ public class AlarmMessageHandler implements RequestHandler<SNSEvent, String> {
             // Check if the current CPU and memory values are in the list of available values
             if (!CPU_VALUES.contains(currentCpuValue) || !MEMORY_VALUES.contains(currentMemoryValue)) {
                 logger.log("Current CPU or memory value is not in the list of available values." + "\n");
-                return "INVALID_CPU_MEMORY_VALUES";
+                return CommonHelper.generateResponse("96", "INVALID_CPU_MEMORY_VALUES");
             }
 
             // Get the index of the current CPU and memory values in the list of available values
@@ -143,13 +162,14 @@ public class AlarmMessageHandler implements RequestHandler<SNSEvent, String> {
 
         } catch (AwsServiceException | SdkClientException ex) {
             logger.log("Error => : " + ex.getMessage());
-            return "Invalid Response3";
+            return CommonHelper.generateResponse("96", "ERROR_OCCURED_DURING_OPERATION");
         } finally {
             if (ecsClient != null) {
                 ecsClient.close();
             }
         }
-        return "SUCCESS";
+
+        return CommonHelper.generateResponse("00", "SUCCESS");
     }
 
 }

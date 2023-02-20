@@ -21,7 +21,7 @@ module "ecs-fargate" {
   private_subnet_ids = [aws_subnet.private_subnet_az1.id, aws_subnet.private_subnet_az2.id]
   cluster_id         = aws_ecs_cluster.cluster.id
 
-  task_container_image = "centos"
+  task_container_image = "tomcat:9.0.71-jdk8-corretto-al2"
 
   // public ip is needed for default vpc, default is false
   task_container_assign_public_ip = true
@@ -45,3 +45,4 @@ module "ecs-fargate" {
 
   }
 }
+
