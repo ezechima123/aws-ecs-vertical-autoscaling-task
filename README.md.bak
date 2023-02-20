@@ -69,7 +69,6 @@ The following are other enhancements that can be done on the system to improve t
 2. Improving the CPU-Memory selection algorithm to avoid Invalid CPU or memory value specified error
 3. Creating two different Lambda Handlers (CpuUtilizationHandler and MemoryUtilizationHandler) to handle different scenarios in line with the SOLID principle and separation of concerns.
 4. Enhance the Terraform scripts and add resources for Cloudwatch Alam/Sns Topics 
-5. Enhance the Terraform scripts and add resources for upload Lambda Jar file to AWS and Setup
 
 
 ## Resources
