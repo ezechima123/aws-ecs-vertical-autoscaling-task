@@ -63,5 +63,6 @@ I consulted few online websites to be able to work on this and few are shown bel
 
 * [AWS SDK V2](https://docs.aws.amazon.com/sdk-for-java/)
 * [Ant Media Server](https://github.com/ant-media/Ant-Media-Server/wiki/Scaling-on-AWS-ECS-Fargate)
+* [AWS Developer Guide](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-cpu-memory-error.html)
 
 
