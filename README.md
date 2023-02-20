@@ -23,12 +23,22 @@ For the Source to build, it requires the following Software requirments as well 
 * [TerraForm installed](https://developer.hashicorp.com/terraform/downloads?product_intent=terraform)
 
 
-Firstly,I have to use `maven` to install our dependencies and package our application into a JAR (ecs-vertical-autoscale-lambda-1.0.0-SNAPSHOT) file:
+Firstly,from the command prompt/Terminal clone the repository with git command or download (directly from Github) the project  into a directory and change directory
 ```bash
-mvn clean verify package
+git clone https://github.com/ezechima123/aws-ecs-vertical-autoscaling-task.git
+
+cd aws-ecs-vertical-autoscaling-task
 ```
 
-Secondly, I set the AWS Access Keys on my Windows Environment PATH as shown below as the Terramform builds is dependent on it:
+
+Secondly,I have to use `maven` to install our dependencies and package our application into a JAR (ecs-vertical-autoscale-lambda-1.0.0-SNAPSHOT.jar) file:
+```bash
+mvn clean verify package
+
+This will create the jar file on the target folder
+```
+
+Thirdly, I set the AWS Access Keys on my Windows Environment PATH as shown below as the Terramform builds is dependent on it:
 ```bash
 WINDOWS 
 set AWS_ACCESS_KEY_ID=your_access_key_id
@@ -41,8 +51,9 @@ export AWS_SECRET_ACCESS_KEY=your_secret_access_key
 export AWS_REGION=your_aws_region
 ```
 
-Thirdly, I ran the Terraform builds to create the Resources(Cluster,Task,Services) as shown below:
+Fourthly, I ran the Terraform builds to create the Resources(Cluster,Task,Services) as shown below:
 ```bash
+cd terraform
 terraform init
 terraform plan
 terraform validate
@@ -50,13 +61,15 @@ terraform apply --auto-approve
 ```
 If all goes well, the resources will be created on your AWS
 
-## Simulation and Testing
 
 ## Further Enhancements
 The following are other enhancements that can be done on the system to improve the production ability of the process:
 
 1. Creating a DeploymentScript or a Ci/Cd pipeline to automating the whole process
 2. Improving the CPU-Memory selection algorithm to avoid Invalid CPU or memory value specified error
+3. Creating two different Lambda Handlers (CpuUtilizationHandler and MemoryUtilizationHandler) to handle different scenarios in line with the SOLID principle and separation of concerns.
+4. Enhance the Terraform scripts and add resources for Cloudwatch Alam/Sns Topics 
+
 
 ## Resources
 I consulted few online websites to be able to work on this and few are shown below:
